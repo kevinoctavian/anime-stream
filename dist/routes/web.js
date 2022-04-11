@@ -86,6 +86,6 @@ function getLink(hostname) {
     if (hostname === "localhost")
         return `http://${hostname}:5000`;
     else
-        `https://hostname`;
+        return `https://${hostname}`;
 }
 exports.default = route;
