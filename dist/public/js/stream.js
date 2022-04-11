@@ -22,6 +22,8 @@ async function changeFile(file) {
         data.stream = "/api/stream/?url=" + data.stream;
     }
 
+    console.log(data);
+
     document.querySelector(".vjs-tech").src = data.stream;
 }
 
@@ -41,6 +43,8 @@ async function changeResolution(res) {
 
     localStorage.setItem("resolusi", res);
 
+    console.log(data);
+    
     document.querySelector(".vjs-tech").src = data.stream;
 }
 
@@ -61,5 +65,7 @@ async function changeProvider(prov) {
         .find((v) => v.resolusi === currentStream.resolusi)
         .downloadLink.find((v) => v.prov === prov);
 
+    console.log(data);
+    
     document.querySelector(".vjs-tech").src = data.stream;
 }
