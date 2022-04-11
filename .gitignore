@@ -1,0 +1,12 @@
+node_modules/
+package-lock.json
+route/
+scrapper/
+types/
+views/
+otakudata.json
+index.ts
+utils.ts
+routes/
+public/
+tsconfig.json
