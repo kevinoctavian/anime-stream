@@ -1,0 +1,12 @@
+extends base.pug
+
+block body
+    .container(class="mt-2")
+        each jad in jadwal 
+            .row(class="my-4")
+                .col-12 
+                    h4 #{jad.hari}
+                .row(class="row-cols-2 row-cols-md-4")
+                    each anime in jad.anime 
+                        .col(class="mb-2 shadow text-center mx-2 py-2")
+                            a(href="/anime/"+anime.id class="text-decoration-none w-100 text-success") #{anime.title}

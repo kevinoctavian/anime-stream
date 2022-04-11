@@ -1,0 +1,20 @@
+nav(class="navbar navbar-expand-lg navbar-light bg-light")
+    div(class="container-fluid")
+        a(class="navbar-brand" href="#") Vinime
+        button(class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation")
+            span(class="navbar-toggler-icon")
+
+        div(class="collapse navbar-collapse" id="navbarSupportedContent") 
+            ul(class="navbar-nav me-auto mb-2 mb-lg-0") 
+                li(class="nav-item") 
+                    a(class="nav-link active" aria-current="page" href="/") Home 
+
+                li(class="nav-item") 
+                    a(class="nav-link" href="/jadwalrilis") jadwal rilis
+
+                li(class="nav-item") 
+                    a(class="nav-link" href="/genres") genre
+
+        form(class="d-flex" action="/") 
+            input(class="form-control me-2" type="search" placeholder="Search" name="search" aria-label="Search").
+            button(class="btn btn-outline-success" type="submit") Search

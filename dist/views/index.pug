@@ -1,0 +1,93 @@
+extends base.pug
+
+block body
+    .container(class="mt-2")
+        each h in home
+            .row: .col(class="col-12 mb-4")
+                    h3 #{h.type}
+
+            .row(class="row-cols-2 row-cols-md-5" id=h.type.split(" ")[0])
+                each data in h.data 
+                    .col(class="mb-3")
+                        include components/animecard.pug
+            
+            .row: .col-12(class="d-flex justify-content-center my-4")
+                    button(id=h.type class="btn btn-secondary" onclick="fetchMore(this)") More #{h.type}
+
+    script.
+        const homeData = !{JSON.stringify(home)};
+    script.
+        let ongoingPage = 1;
+        let completePage = 1;
+        async function fetchMore(el) {
+            let datas;
+            let data;
+            switch (el.id) {
+                case "Ongoing Anime":
+                    datas = await (await fetch("/api/otakudesu/?type=ongoing&page="+ongoingPage)).json();
+                    const ongoing = document.querySelector("#Ongoing");
+
+                    if (datas.length === 0) return el.remove();
+
+                    data = clearArray(datas, 0);
+
+                    for (const a of data) {
+                        ongoing.appendChild(template(a))
+                    }
+
+                    homeData[0].data.push(...data)
+
+                    ongoingPage += 1;
+                    break;
+                case "Complete Anime":
+                    datas = await (await fetch("/api/otakudesu/?type=complete&page"+completePage)).json();
+                    const complete = document.querySelector("#Complete");
+
+                    if (datas.length === 0) return el.remove();
+
+                    data = clearArray(datas, 1);
+
+                    for (const a of data) {
+                        complete.appendChild(template(a))
+                    }
+
+                    homeData[1].data.push(...data)
+
+                    completePage += 1;
+                    break ;
+            }
+        }
+
+        function template(data) {
+            const div = document.createElement("div");
+            div.classList.add("col");
+            div.classList.add("mb-3");
+
+            const animeCard = document.createElement("div");
+            animeCard.classList.add("animeCard");
+            animeCard.innerHTML = `
+                <a href="/anime/${data.id}">
+                    <img class="img-fluid" src="${data.image}" alt="${data.title}" height="100%">
+                    <div class="dark-image"></div>
+                    <p class="anime-title">${data.title}</p>
+                    <p class="anime-episode">${data.episode}</p>
+                    <p class="anime-rilis">${data.hari}, ${data.tanggal}</p>
+                </a>
+            `
+
+            div.appendChild(animeCard);
+
+            return div;
+        }
+
+        function clearArray(arr, fors) {
+            const result = [];
+
+            for (const data of arr) {
+                if (homeData[fors].data.findIndex((v) => v.id === data.id) === -1) {
+                    result.push(data);
+                }
+            }
+
+            return result;
+        }

@@ -1,0 +1,49 @@
+extends base.pug
+
+block prepend title
+    title #{id} | Vinime Web stream
+
+block body
+    .container 
+        .row(class="my-3")
+            .col-3
+                img(src=anime.image alt=id class="img-fluid") 
+            .col-9
+                each detail in anime.details
+                    p= detail
+
+        .row(class="mb-3") 
+            .col-12 
+                each sinopsis in anime.sinopsis
+                    p= sinopsis
+
+        .row(class="mb-3") 
+            .col-12
+                ul.list-group
+                    each episode in anime.episodes
+                        li.list-group-item
+                            a(href="/watch/" + episode.id + "/?animeId=" + id class="text-decoration-none all-episode") 
+                                |#{episode.judul}, 
+                                span(class="ms-auto")
+                                | #{episode.tanggal}
+
+        .row(class="mb-3")
+            .col-12
+                .row(class="row-cols-2 row-cols-md-5")  
+                    each rekomendasi in anime.rekomendasi
+                        .col(class="mb-3")
+                            .animeCard
+                                a(href="/anime/" + rekomendasi.id) 
+                                    img(src=rekomendasi.image, alt=rekomendasi.title class="img-fluid" height="100%")
+                                    .dark-image
+                                    p.anime-title #{rekomendasi.title}
+    
+    script.
+        (() => {
+            const episodes = document.querySelectorAll(".all-episode");
+            const res = localStorage.getItem("resolusi") || "480p"
+
+            episodes.forEach(v => {
+                v.href = v.href + `&resolution=${res}`
+            })
+        })();         

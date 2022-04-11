@@ -1,0 +1,74 @@
+extends base.pug
+
+append head
+    link(href="https://vjs.zencdn.net/7.18.1/video-js.css" rel="stylesheet")
+
+block prepend title
+    title Watch #{anime.details[0].split(":")[1]} | Vinime Web stream
+
+block body
+    .container(class="my-4")
+        .row 
+            .col-12(class="col-md-8")
+                .row
+                    .col-12 
+                        video-js(id="myvideo" data-setup='{"controls": true, "autoplay": false, "preload": "auto"}' class="w-100")
+                            source(src=stream.stream type="video/mp4")
+
+                    .col-12
+                        div(class="btn-group")
+                            if (stream.mkv.length !== 0)
+                                button(id="btn-file" class="btn btn-secondary btn-sm dropdown-toggle ms-2 mt-2" type="button" data-bs-toggle="dropdown" aria-expanded="false") type file #{file}
+                                ul(class="dropdown-menu")
+                                    li: button(class="btn btn-outline-secondary w-100" onclick="changeFile('mp4')") Mp4 
+                                    li: button(class="btn btn-outline-secondary w-100" onclick="changeFile('mkv')") Mkv
+
+                            button(id="btn-resolusi" class="btn btn-secondary btn-sm dropdown-toggle ms-2 mt-2" type="button" data-bs-toggle="dropdown" aria-expanded="false") #{currentStream.resolusi}
+                            ul(class="dropdown-menu")
+                                each res in stream[file]
+                                    li: button(class="btn btn-outline-secondary w-100" onclick="changeResolution('"+res.resolusi+"')") #{res.resolusi}
+
+                            button(id="btn-provider" class="btn btn-secondary btn-sm dropdown-toggle ms-2 mt-2" type="button" data-bs-toggle="dropdown" aria-expanded="false") #{currentProfiver.prov}
+                            ul(class="dropdown-menu")
+                                each res, i in stream.mp4
+                                    .splitter(class=i > 0 ? "d-none" : "d-block" class="w-100")
+                                        each prov in res.downloadLink
+                                            li: button(class="btn btn-outline-secondary w-100" onclick="changeProvider('"+prov.prov+"')") #{prov.prov}
+                            
+
+                .row(class="my-3")
+                    .col-3
+                        img(src=anime.image alt=id class="img-fluid") 
+                    .col-9
+                        each detail in anime.details
+                            p= detail
+
+                .row(class="mb-3") 
+                    .col-12 
+                        each sinopsis in anime.sinopsis
+                            p= sinopsis
+
+            .col-12(class="col-md-4")
+                .row(class="mb-3") 
+                    .col-12
+                        ul.list-group
+                            each episode, i in anime.episodes.reverse()
+                                li.list-group-item
+                                    a(href="/watch/" + episode.id + "/?animeId=" + id class="text-decoration-none") 
+                                        //- |#{episode.judul}, 
+                                        //- span(class="ms-auto")
+                                        //- | #{episode.tanggal}
+                                        | Tonton episode #{i + 1}
+
+
+
+    script.
+        const haveMkv = #{stream.mkv.length !== 0};
+        const id = "#{thisId}"
+        let currentStream = !{JSON.stringify(currentStream)};
+        let currentProfiver = !{JSON.stringify(currentProfiver)};
+        let typefiles = "#{file}";
+
+    script(src="https://vjs.zencdn.net/7.18.1/video.min.js")
+    script(src="/js/stream.js")
+            
