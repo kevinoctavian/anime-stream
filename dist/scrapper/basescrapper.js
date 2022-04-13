@@ -40,6 +40,9 @@ class BaseScrapper {
             console.log(this._link + route);
             const ax = yield axios_1.default.post(this._link + route, data, {
                 headers: this.header,
+                proxy: {
+                  host: "1.1.1.1",
+                }
             });
             // console.log(headers);
             this.body = yield ax.data;
