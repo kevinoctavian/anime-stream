@@ -13,8 +13,8 @@ route.get("/", async (req, res) => {
     console.log(req.headers.range);
 
     const ffmpeg = fluentFfmpeg(query);
-    ffmpeg.setFfmpegPath(ffmpegStatic);
-    ffmpeg.setFfprobePath(ffprobeStatic.path);
+    // ffmpeg.setFfmpegPath(ffmpegStatic);
+    // ffmpeg.setFfprobePath(ffprobeStatic.path);
 
     ffmpeg
         .setAspectRatio("16:8")

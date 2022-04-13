@@ -19,7 +19,7 @@ app.use(express.static(path.join(__dirname, "public")));
 
 if (process.env.NODE_ENV === "production" || process.argv[2] === "production") {
     app.use(express.static(path.join(__dirname, "..", "public")));
-    app.set("views", "../views");
+    app.set("views", path.join(__dirname, "..", "views"));
     console.log("Is Production");
 }
 
