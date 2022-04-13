@@ -127,7 +127,7 @@ route.get("/genres/:id", async (req, res) => {
 
 function getLink(hostname: string) {
     if (hostname === "localhost") return `http://${hostname}:5000`;
-    else `https://hostname`;
+    else return `https://${hostname}`;
 }
 
 export default route;

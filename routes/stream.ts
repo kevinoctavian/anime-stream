@@ -10,16 +10,11 @@ const route = Router();
 route.get("/", async (req, res) => {
     const query = <string>req.query.url;
 
+    console.log(req.headers.range);
+
     const ffmpeg = fluentFfmpeg(query);
     ffmpeg.setFfmpegPath(ffmpegStatic);
     ffmpeg.setFfprobePath(ffprobeStatic.path);
-
-    res.header("Content-Type", "video/mp4");
-
-    ffmpeg.ffprobe((err, data) => {
-        if (err) return res.status(400);
-        console.log(data.format);
-    });
 
     ffmpeg
         .setAspectRatio("16:8")
@@ -27,12 +22,23 @@ route.get("/", async (req, res) => {
         .addOutputOptions(
             "-movflags +frag_keyframe+separate_moof+omit_tfhd_offset+empty_moov",
         )
+        .audioCodec("copy")
+        .videoCodec("copy")
         .format("mp4");
     ffmpeg.on("error", (e) => {
         console.error(e);
     });
 
-    ffmpeg.pipe(res, { end: true });
+    ffmpeg.ffprobe((err, data) => {
+        if (err) return res.status(400);
+
+        res.writeHead(200, null, {
+            "Content-Length": data.format.size,
+            "Content-Type": "video/mp4",
+        });
+
+        ffmpeg.pipe(res, { end: true });
+    });
 
     // res.send(ffmpegStatic);
 });

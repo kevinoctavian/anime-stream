@@ -13,7 +13,7 @@ block body
                 .row
                     .col-12 
                         video-js(id="myvideo" data-setup='{"controls": true, "autoplay": false, "preload": "auto"}' class="w-100")
-                            source(src=stream.stream type="video/mp4")
+                            source(src="/api/stream/?url=" + stream.stream type="video/mp4")
 
                     .col-12
                         div(class="btn-group")

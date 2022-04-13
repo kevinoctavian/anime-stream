@@ -1,4 +1,4 @@
-import axios, { AxiosRequestHeaders } from "axios";
+import axios, { AxiosProxyConfig, AxiosRequestHeaders } from "axios";
 
 export class BaseScrapper {
     private _link: string;
