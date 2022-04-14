@@ -15,7 +15,7 @@ route.get("/channel/:id", async (req, res) => {
     const token = <string | undefined>req.query.token;
     const isVideo = req.query.isVideo ? true : false;
 
-    let channel = getChannel(channelId);
+    let channel;
     if (api && token) {
         channel = await getChannel(channelId, { api, token, isVideo });
     } else {
