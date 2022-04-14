@@ -27,6 +27,7 @@ app.set("view engine", "pug");
 
 app.use("/", HomeRoute);
 app.use("/api", router);
+app.use("/ping", (req, res) => res.status(200).send("haii brow"));
 
 app.listen(PORT, () =>
     console.log(
