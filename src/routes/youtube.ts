@@ -1,6 +1,7 @@
 import { Router } from "express";
 import { getInfo } from "ytdl-core";
 import { channelQuery } from "../types/youtubeTypes";
+import { getChannel } from "../scrapper/youtube/getChannel";
 
 const route = Router();
 
@@ -10,8 +11,18 @@ route.get("/", (req, res) => {
 
 route.get("/channel/:id", async (req, res) => {
     const channelId = req.params.id;
+    const api = <string | undefined>req.query.api;
+    const token = <string | undefined>req.query.token;
+    const isVideo = req.query.isVideo ? true : false;
 
-    res.status(200).json({ message: "undercontruc" });
+    let channel = getChannel(channelId);
+    if (api && token) {
+        channel = getChannel(channelId, { api, token, isVideo });
+    } else {
+        channel = getChannel(channelId);
+    }
+
+    res.status(200).json({ channel });
 });
 
 route.get("/playlist/:id", async (req, res) => {

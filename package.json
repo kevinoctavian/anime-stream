@@ -6,7 +6,9 @@
     "scripts": {
         "test": "ts-node test.ts",
         "start": "node dist/index.js",
-        "run-server": "ts-node index.ts"
+        "run-server": "ts-node src/index.ts",
+        "postinstall": "tsc && mv -i -v src/public dist/ && mv -i -v src/views dist/ && rm -v -rf src",
+        "build-dev": "tsc && xcopy .\\src\\public .\\dist\\public /E && xcopy .\\src\\views .\\dist\\views /E"
     },
     "keywords": [],
     "author": "",
