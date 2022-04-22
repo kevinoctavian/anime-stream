@@ -12,28 +12,24 @@ block body
             .col-12(class="col-md-8")
                 .row
                     .col-12 
-                        video-js(id="myvideo" data-setup='{"controls": true, "autoplay": false, "preload": "auto"}' class="w-100")
-                            source(src="/api/stream/?url=" + stream.stream type="video/mp4")
+                        iframe(src=stream[resolution] allowfullscreen="true" webkitallowfullscreen="true" mozallowfullscreen="true" width="420" height="370")
 
                     .col-12
                         div(class="btn-group")
-                            if (stream.mkv.length !== 0)
-                                button(id="btn-file" class="btn btn-secondary btn-sm dropdown-toggle ms-2 mt-2" type="button" data-bs-toggle="dropdown" aria-expanded="false") type file #{file}
-                                ul(class="dropdown-menu")
-                                    li: button(class="btn btn-outline-secondary w-100" onclick="changeFile('mp4')") Mp4 
-                                    li: button(class="btn btn-outline-secondary w-100" onclick="changeFile('mkv')") Mkv
-
-                            button(id="btn-resolusi" class="btn btn-secondary btn-sm dropdown-toggle ms-2 mt-2" type="button" data-bs-toggle="dropdown" aria-expanded="false") #{currentStream.resolusi}
+                            button(id="btn-file" class="btn btn-secondary btn-sm dropdown-toggle ms-2 mt-2" type="button" data-bs-toggle="dropdown" aria-expanded="false") Mirror 320p
                             ul(class="dropdown-menu")
-                                each res in stream[file]
-                                    li: button(class="btn btn-outline-secondary w-100" onclick="changeResolution('"+res.resolusi+"')") #{res.resolusi}
+                                each res, i in Array(stream.total.mirror360p)
+                                    li: a(class="text-dark w-100" href=`/watch/${thisId}/?animeId=${id}&miror360=${i + 1}&resolution=360p`) 360p mirror #{i + 1}
 
-                            button(id="btn-provider" class="btn btn-secondary btn-sm dropdown-toggle ms-2 mt-2" type="button" data-bs-toggle="dropdown" aria-expanded="false") #{currentProfiver.prov}
+                            button(id="btn-resolusi" class="btn btn-secondary btn-sm dropdown-toggle ms-2 mt-2" type="button" data-bs-toggle="dropdown" aria-expanded="false") Mirror 480p
                             ul(class="dropdown-menu")
-                                each res, i in stream.mp4
-                                    .splitter(class=i > 0 ? "d-none" : "d-block" class="w-100")
-                                        each prov in res.downloadLink
-                                            li: button(class="btn btn-outline-secondary w-100" onclick="changeProvider('"+prov.prov+"')") #{prov.prov}
+                                each res, i in Array(stream.total.mirror480p)
+                                    li: a(class="text-dark w-100" href=`/watch/${thisId}/?animeId=${id}&miror480=${i + 1}&resolution=480p`) 480p mirror #{i + 1}
+
+                            button(id="btn-provider" class="btn btn-secondary btn-sm dropdown-toggle ms-2 mt-2" type="button" data-bs-toggle="dropdown" aria-expanded="false") Mirror 720p
+                            ul(class="dropdown-menu")
+                                each res, i in Array(stream.total.mirror720p)
+                                    li: a(class="text-dark w-100" href=`/watch/${thisId}/?animeId=${id}&miror720=${i + 1}&resolution=720p`) 720p mirror #{i + 1}
                             
 
                 .row(class="my-3")
@@ -59,15 +55,6 @@ block body
                                         //- span(class="ms-auto")
                                         //- | #{episode.tanggal}
                                         | Tonton episode #{i + 1}
-
-
-
-    script.
-        const haveMkv = #{stream.mkv.length !== 0};
-        const id = "#{thisId}"
-        let currentStream = !{JSON.stringify(currentStream)};
-        let currentProfiver = !{JSON.stringify(currentProfiver)};
-        let typefiles = "#{file}";
 
     script(src="https://vjs.zencdn.net/7.18.1/video.min.js")
     script(src="/js/stream.js")

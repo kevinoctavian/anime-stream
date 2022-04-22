@@ -37,20 +37,28 @@ route.get("/anime/:id", async (req, res) => {
 });
 
 route.get("/watch/:id", async (req, res) => {
-    let file = req.query.file || "mp4";
-    const type = req.query.type || "zippyshare";
+    const miror360 = req.query.miror360 || 1;
+    const miror480 = req.query.miror480 || 1;
+    const miror720 = req.query.miror720 || 1;
+    // const type = req.query.type || "zippyshare";
     const resolution =
         req.query.resolution || req.cookies.pResolution || "480p";
     const animeId = req.query.animeId;
 
     if (!animeId) return res.redirect("/");
 
+    // `
+    // ${getLink(req.hostname)}/api/otakudesu/download/${
+    //     req.params.id
+    // }/?resolution=${resolution}&type=${type}&file=${file}
+    // `
+
     const stream = await (
         await axios.get(
             `
             ${getLink(req.hostname)}/api/otakudesu/download/${
                 req.params.id
-            }/?resolution=${resolution}&type=${type}&file=${file}
+            }/?useEmbed=${true}&mirror360=${miror360}&mirror480=${miror480}&mirror720=${miror720}
             `,
         )
     ).data;
@@ -66,25 +74,26 @@ route.get("/watch/:id", async (req, res) => {
     if (req.cookies.pResolution)
         res.cookie("pResolution", "480p", { maxAge: 14 * 24 * 36e5 });
 
-    if (file === "mkv") stream.stream = "/api/stream/?url=" + stream.stream;
-    if (stream.mkv.length === 0) file = "mp4";
+    // if (file === "mkv") stream.stream = "/api/stream/?url=" + stream.stream;
+    // if (stream.mkv.length === 0) file = "mp4";
 
-    console.log();
+    // const current = stream[<string>file].find(
+    //     (v: { resolusi: string }) => v.resolusi === resolution,
+    // );
 
-    const current = stream[<string>file].find(
-        (v: { resolusi: string }) => v.resolusi === resolution,
-    );
+    console.log(stream.embed);
 
     res.render("stream", {
         anime,
         id: animeId,
         thisId: req.params.id,
-        stream,
-        currentStream: current,
-        currentProfiver: current.downloadLink.find(
-            (v: { prov: string }) => v.prov === type,
-        ),
-        file,
+        stream: stream.embed,
+        resolution,
+        // currentStream: current,
+        // currentProfiver: current.downloadLink.find(
+        //     (v: { prov: string }) => v.prov === type,
+        // ),
+        // file,
     });
 });
 
