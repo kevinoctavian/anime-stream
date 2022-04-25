@@ -1,7 +1,8 @@
-import axios, { AxiosProxyConfig, AxiosRequestHeaders } from "axios";
+import axios, { AxiosRequestConfig, AxiosRequestHeaders } from "axios";
 
 export class BaseScrapper {
     private _link: string;
+    private option: AxiosRequestConfig;
     protected body: any;
 
     private header: AxiosRequestHeaders = {
@@ -9,9 +10,14 @@ export class BaseScrapper {
             "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/92.0.4515.107 Safari/537.36",
     };
 
-    constructor(link: string, option?: AxiosRequestHeaders) {
+    constructor(
+        link: string,
+        header?: AxiosRequestHeaders,
+        option: AxiosRequestConfig = {},
+    ) {
         this._link = link;
-        this.header = { ...this.header, ...option };
+        this.header = { ...this.header, ...header };
+        this.option = option;
     }
 
     get link() {
@@ -22,6 +28,7 @@ export class BaseScrapper {
         console.log(this._link + route);
         const { data, headers } = await axios.get(this._link + route, {
             headers: this.header,
+            ...this.option,
         });
         // console.log(headers);
 

@@ -1,7 +1,7 @@
-import Kiryuu from "./scrapper/kiryuu";
+import Nhentai from "./scrapper/nhentai";
 
 (async () => {
-    const kiryu = new Kiryuu();
+    const nhentai = new Nhentai();
 
-    console.log(await kiryu.mangaInfo("runway-de-waratte"));
+    console.log(await nhentai.home());
 })();
